@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<info>
+	<id>internal_bookmarks</id>
+	<name>Internal Bookmarks</name>
+	<description>Allow to set up bookmarks by clicking on the new action star icon.</description>
+	<version>2.1.3</version>
+	<licence>AGPL</licence>
+	<author>Xavier Beurois (www.djazz-lab.net)</author>
+	<require>4</require>
+	<shipped>true</shipped>
+</info>
