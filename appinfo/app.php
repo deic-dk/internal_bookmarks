@@ -29,24 +29,24 @@ OCP\App::register(Array(
 	'name' => 'Internal Bookmarks'
 ));
 
-OCP\Util::addScript('internal_bookmarks', 'actlink.min');
 
 if(\OCP\User::isLoggedIn() ){
-		foreach(OC_IntBks::getAllItemsByUser() as $item){
-				$item['bktarget'] = str_replace('+','%20',urlencode($item['bktarget']));
-				//		$item['bktarget'] = str_replace('%2F','//', $item['bktarget']);
+  OCP\Util::addScript('internal_bookmarks', 'actlink.min');
+  foreach(OC_IntBks::getAllItemsByUser() as $item){
+	$item['bktarget'] = str_replace('+','%20',urlencode($item['bktarget']));
+	//		$item['bktarget'] = str_replace('%2F','//', $item['bktarget']);
 
-				\OCA\Files\App::getNavigationManager()->add(
-						array(
-								"id" => 'internal-bookmarks_'. $item['bkid'] ,
-								"appname" => 'internal_bookmarks',
-								"script" => 'list.php',
-								"order" =>  2 + ($item['bkorder'] / 100),
-								"name" => $item['bktitle'],
-								"href" => "?dir=".$item['bktarget']
-						)
-				);
-		}
+	\OCA\Files\App::getNavigationManager()->add(
+	  array(
+		"id" => 'internal-bookmarks_'. $item['bkid'] ,
+		"appname" => 'internal_bookmarks',
+		"script" => 'list.php',
+		"order" =>  2 + ($item['bkorder'] / 100),
+		"name" => $item['bktitle'],
+		"href" => "?dir=".$item['bktarget']
+	  )
+	);
+  }
 }
 
 
