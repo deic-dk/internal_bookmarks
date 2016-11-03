@@ -1,7 +1,6 @@
-oc-apps_internal-bookmarks
+internal_bookmarks
 ==========================
 
-Main repository for OwnCloud Internal Bookmarks application
+Small app for adding file/folder bookmarks to left-hand bar.
 
-Internal Bookmarks is now compliant with OC 4.5.5
-For more details on what has changed, please visit http://www.djazz-lab.net/blog 
+Forked from oc-apps_internal-bookmarks - see http://www.djazz-lab.net/blog 
