@@ -29,3 +29,6 @@ $k = OC_IntBks::getAllItemsByUser();
 if(count($k) > 0){
 	OCP\JSON::encodedPrint($k);
 }
+else{
+	OCP\JSON::encodedPrint([]);
+}

@@ -27,10 +27,9 @@ OCP\JSON::checkAppEnabled('internal_bookmarks');
 $c = $_POST['c'];
 $k = OC_IntBks::getItemByTarget($c);
 
-$return = Array('r' => FALSE);
-
 if(count($k) > 0){
 	OC_IntBks::deleteItemByTarget($c);
+	$return = Array('r' => FALSE);
 }else{
 	$t = OC_IntBks::insertNewItem($c);
 	$t['bktarget'] = str_replace('+','%20',urlencode(str_replace('%2F','/', $t['bktarget'])));
