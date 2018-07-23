@@ -76,6 +76,7 @@ class OC_IntBks {
 		$target = self::cleanTarget($target);
 		$query = OCP\DB::prepare('DELETE FROM *PREFIX*internal_bookmarks WHERE bktarget = ? AND uid = ?');
 		$result = $query->execute(Array($target, OCP\User::getUser()));
+		return $result;
 	}
 	
 	/**
@@ -84,6 +85,8 @@ class OC_IntBks {
 	 * @return Array Complete element just inserted 
 	 */
 	public static function insertNewItem($target){
+		// $target has been urlencoded twice or more precisely, the path and the arguments have each been
+		// urlencoded and the whole thing then urlencoded by the jquery ajax method.
 		$target = self::cleanTarget($target);
 		$tot = self::getAllItemsByUser();
 		if(count($tot)==0){
@@ -91,8 +94,16 @@ class OC_IntBks {
 		}else{
 			$tot = $tot[count($tot)-1]['bkorder'];
 		}
+		$title = substr($target, strrpos($target, '/')+1);
+		$paramsIndex = strpos($title, '&');
+		if($paramsIndex){
+			$title = substr($title, 0, $paramsIndex);
+		}
 		$query = OCP\DB::prepare('INSERT INTO *PREFIX*internal_bookmarks (uid, bktitle, bktarget, bkorder) VALUES (?,?,?,?)');
-		$query->execute(Array(OCP\User::getUser(), substr($target, strrpos($target, '/')+1), $target, $tot+1));
+		$query->execute(Array(OCP\User::getUser(),
+				$title,
+				$target,
+				$tot+1));
 		return self::getItemByTarget($target);
 	}
 	
@@ -122,10 +133,20 @@ class OC_IntBks {
 	 * @return String
 	 */
 	private static function cleanTarget($target){
-		$target = trim($target, '/');
+		$target = trim(urldecode($target), '/');
 		while(substr($target, 0, 1) == '/'){
 			$target = trim($target, '/');
 		}
 		return '/' . $target;
+	}
+	
+	public static function deleteHook($params){
+		$user_id = \OCP\User::getUser();
+		$path = $params['path'];
+		//$id = \OCA\FilesSharding\Lib::getFileId($path, $user_id, '');
+		//$group = empty($id)?'':\OC_User_Group_Admin_Util::getGroup($id);
+		\OCP\Util::writeLog('internal_bookmarks','DELETE '.serialize($params).'-->'.serialize($_REQUEST), \OCP\Util::WARN);
+		$res = self::deleteItemByTarget($path);
+		return $res;
 	}
 }

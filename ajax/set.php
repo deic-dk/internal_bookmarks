@@ -32,7 +32,7 @@ if(count($k) > 0){
 	$return = Array('r' => FALSE);
 }else{
 	$t = OC_IntBks::insertNewItem($c);
-	$t['bktarget'] = str_replace('+','%20',urlencode(str_replace('%2F','/', $t['bktarget'])));
+	//$t['bktarget'] = str_replace('+','%20',urlencode(str_replace('%2F','/', $t['bktarget'])));
 	$t['bktarget'] = OCP\Util::linkTo('files', 'index.php').'&dir=' . $t['bktarget'];
 	
 	$return = Array('r' => TRUE, 'e' => $t);
