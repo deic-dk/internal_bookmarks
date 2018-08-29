@@ -19,4 +19,6 @@
 * 
 */
 
-form#intbks ul#intbks_sortable{list-style-type:none;margin:0;padding:0;width:60%}form#intbks ul#intbks_sortable li{margin:0 3px 3px 3px;padding:.4em;padding-left:1.5em;font-size:1.4em;height:18px}form#intbks ul#intbks_sortable li span{position:absolute;margin-left:-1.3em;background-image:url("img/222222_256x240_icons_icons.png");height:16px;width:16px;background-position:-128px -48px}
+form#intbks ul#intbks_sortable{list-style-type:none;margin:0;padding:0;width:60%}
+form#intbks ul#intbks_sortable li{margin:0 3px 3px 3px;padding-left:1.5em;}
+form#intbks ul#intbks_sortable li span{position:absolute;margin-left:-1.3em;}

@@ -25,16 +25,17 @@ OCP\Util::addStyle('internal_bookmarks', 'styles');
 OCP\Util::addScript('internal_bookmarks','settings.min');
 
 ?>
-
-<form id="intbks" method="POST" action="#">
-	<fieldset class="personalblock">
-		<strong>Internal Bookmarks</strong>
+<fieldset class="section">
+	<form id="intbks" method="POST" action="#">
+		<h2>Internal Bookmarks</h2>
+		<br>
 		<input type="hidden" id="h_intbks" name="h_intbks" value="1" />
 		<ul id="intbks_sortable">
 		<?php foreach($_['bk_list'] as $bk){ ?>
 		<li rel="intbks_<?php print($bk['bkid']); ?>" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><?php print($bk['bktitle']); ?></li>
 		<?php } ?>
 		</ul>
+		<br>
 		<input type="button" id="saveintbks" value="Save" />
-	</fieldset>
-</form>
+	</form>
+</fieldset>

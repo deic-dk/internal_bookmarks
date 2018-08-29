@@ -58,7 +58,7 @@ if(\OCP\User::isLoggedIn() ){
   }
 }
 
-
+// No added functionality to what's on the front. TODO: consider allowing name editing
 //OCP\App::registerPersonal('internal_bookmarks', 'settings');
 
 // Unfortunately this is not triggered when in group folder
