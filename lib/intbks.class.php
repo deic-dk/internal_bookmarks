@@ -72,10 +72,17 @@ class OC_IntBks {
 	 * Delete an item by its target and UID
 	 * @param $target The target of the item
 	 */
-	public static function deleteItemByTarget($target){
+	public static function deleteItemByTarget($target, $setProperty=true){
 		$target = self::cleanTarget($target);
 		$query = OCP\DB::prepare('DELETE FROM *PREFIX*internal_bookmarks WHERE bktarget = ? AND uid = ?');
 		$result = $query->execute(Array($target, OCP\User::getUser()));
+		if($setProperty){
+			$query = OC_DB::prepare('DELETE FROM `*PREFIX*properties`'
+					. ' WHERE `userid` = ? AND `propertypath` = ? AND `propertyname` = ?');
+			$query->execute(array(OCP\User::getUser(), self::stripParams($target),
+					'{' . \OC_Connector_Sabre_FilesPlugin::NS_OWNCLOUD . '}favorite'
+			));
+		}
 		return $result;
 	}
 	
@@ -84,14 +91,15 @@ class OC_IntBks {
 	 * @param $target The target location of the item
 	 * @return Array Complete element just inserted 
 	 */
-	public static function insertNewItem($target){
+	public static function insertNewItem($target, $setProperty=true){
 		// $target has been urlencoded twice or more precisely, the path and the arguments have each been
 		// urlencoded and the whole thing then urlencoded by the jquery ajax method.
 		$target = self::cleanTarget($target);
 		$tot = self::getAllItemsByUser();
 		if(count($tot)==0){
 			$tot=0;
-		}else{
+		}
+		else{
 			$tot = $tot[count($tot)-1]['bkorder'];
 		}
 		$title = substr($target, strrpos($target, '/')+1);
@@ -104,6 +112,12 @@ class OC_IntBks {
 				$title,
 				$target,
 				$tot+1));
+		if($setProperty){
+			$query = OC_DB::prepare('INSERT INTO `*PREFIX*properties`'
+					. ' (`userid`,`propertypath`,`propertyname`,`propertyvalue`) VALUES(?,?,?,?)');
+			$query->execute(array(OCP\User::getUser(), self::stripParams($target), 
+				'{' . \OC_Connector_Sabre_FilesPlugin::NS_OWNCLOUD . '}favorite', 1));
+		}
 		return self::getItemByTarget($target);
 	}
 	
@@ -138,6 +152,10 @@ class OC_IntBks {
 			$target = trim($target, '/');
 		}
 		return '/' . $target;
+	}
+	
+	private static function stripParams($target){
+		return preg_replace('|([^?&]+)[?&].*|', '$1', $target);
 	}
 	
 	public static function deleteHook($params){
