@@ -112,7 +112,7 @@ class OC_IntBks {
 				$title,
 				$target,
 				$tot+1));
-		if($setProperty){
+		if($setProperty && !preg_match('|&|', $target)){
 			$query = OC_DB::prepare('INSERT INTO `*PREFIX*properties`'
 					. ' (`userid`,`propertypath`,`propertyname`,`propertyvalue`) VALUES(?,?,?,?)');
 			$query->execute(array(OCP\User::getUser(), self::stripParams($target), 
